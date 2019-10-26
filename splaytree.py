@@ -1,7 +1,6 @@
 import sys
 from queue import Queue
 from math import log2
-import timeit
 
 
 def get_command(stree):
@@ -59,12 +58,6 @@ class Node:
         self.val = val  # val is string
         self.left = self.right = None
         self.parent = parent
-
-    def out(self):
-        if self.parent is not None:
-            return '[' + str(self.key) + ' ' + self.val + ' ' + str(self.parent) + ']'
-        else:
-            return '[' + str(self.key) + ' ' + self.val + ']'
 
 
 class SplayTree:
@@ -190,14 +183,6 @@ class SplayTree:
                 # self.splay(x)
                 return False
 
-    # def set(self, key, value):
-    #     # x = self.search(key)
-    #     if self.search(key).split()[0] == '1':
-    #         self.root.val = value
-    #         return True
-    #     else:
-    #         return False
-
     def Zig(self, x):
         if x.parent.right == x:
             x.parent.right = x.left
@@ -245,7 +230,7 @@ class SplayTree:
         if self.root is None:
             return '_\n'
         q = Queue()
-        s = self.root.out() + '\n'
+        s = '[' + str(self.root.key) + ' ' + self.root.val + ']' + '\n'
         n = self.num_of_nodes
         n -= 1
         if n == 0:
@@ -293,7 +278,6 @@ class SplayTree:
                     out += '_ '
                     i += 1
             else:
-                # parent_key = node.parent.key
                 out += '[{} {} {}] '.format(node.key, node.val, node.parent.key)
                 i += 1
 
@@ -308,28 +292,5 @@ class SplayTree:
         return s
 
 
-a = timeit.default_timer()
 st = SplayTree()
 get_command(st)
-print(timeit.default_timer() - a)
-
-
-print('a')
-# queue = []
-# visited = set()
-# queue.append(self.start_vertex)
-#
-# while queue:
-#     v = queue.pop(0)
-#
-#     if v not in visited:
-#         visited.add(v)
-#         print(v)
-#         if self.table.get(v) is not None:
-#             self.table.get(v).sort()  # в порядке возрастания, удаление с начала
-#             for u in self.table.get(v):
-#                 queue.append(u)
-#     else:
-#         continue
-
-
