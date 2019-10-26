@@ -312,6 +312,7 @@ a = timeit.default_timer()
 st = SplayTree()
 get_command(st)
 print(timeit.default_timer() - a)
+print('a')
 # queue = []
 # visited = set()
 # queue.append(self.start_vertex)
@@ -328,3 +329,5 @@ print(timeit.default_timer() - a)
 #                 queue.append(u)
 #     else:
 #         continue
+
+
