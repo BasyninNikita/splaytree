@@ -5,21 +5,21 @@ from math import log2
 
 def get_command(stree):
     for line in sys.stdin:
-        if 'set' in line:
+        if 'set' in line and line.split()[0] == 'set':
             if len(line.replace('set', '').strip().split(' ')) == 2:
                 success = stree.set(int(line.split()[1]), line.split()[2])
                 if not success:
                     print('error')
             else:
-                print('error')
-        elif 'add' in line:
+                print('error')  
+        elif 'add' in line and line.split()[0] == 'add':
             if len(line.replace('add', '').strip().split(' ')) == 2:  # maybe isdigit
                 success = stree.add(int(line.split()[1]), line.split()[2])
                 if not success:
                     print('error')
             else:
                 print('error')
-        elif 'search' in line:
+        elif 'search' in line and line.split()[0] == 'search':
             if len(line.replace('search', '').strip().split(' ')) == 1:
                 print(stree.search(int(line.split()[1])))
             else:
@@ -29,7 +29,7 @@ def get_command(stree):
                 print('error')
             else:
                 print(stree.print(), end='')
-        elif 'delete' in line:
+        elif 'delete' in line and line.split()[0] == 'delete':
             if len(line.replace('delete', '').strip().split(' ')) == 1:
                 success = stree.delete(int(line.split()[1]))
                 if not success:
