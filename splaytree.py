@@ -11,7 +11,7 @@ def get_command(stree):
                 if not success:
                     print('error')
             else:
-                print('error')  
+                print('error')
         elif 'add' in line and line.split()[0] == 'add':
             if len(line.replace('add', '').strip().split(' ')) == 2:  # maybe isdigit
                 success = stree.add(int(line.split()[1]), line.split()[2])
@@ -21,7 +21,11 @@ def get_command(stree):
                 print('error')
         elif 'search' in line and line.split()[0] == 'search':
             if len(line.replace('search', '').strip().split(' ')) == 1:
-                print(stree.search(int(line.split()[1])))
+                succ = stree.search(int(line.split()[1]))
+                if succ is None:
+                    print('0')
+                else:
+                    print(str(succ[0]) + ' ' + succ[1]) #str(succ).split()[1])
             else:
                 print('error')
         elif 'print' in line:
@@ -40,12 +44,14 @@ def get_command(stree):
             if line.replace("min", '') != '\n':
                 print('error')
             else:
-                print(stree.findMin())
+                succ = stree.findMin()
+                print('error') if succ is None else print(str(succ[0]) + ' ' + succ[1])
         elif 'max' in line:
             if line.replace("max", '') != '\n':
                 print('error')
             else:
-                print(stree.findMax())
+                succ = stree.findMax()
+                print('error') if succ is None else print(str(succ[0]) + ' ' + succ[1])
         elif line == '\n':
             continue
         else:
@@ -67,25 +73,25 @@ class SplayTree:
 
     def findMin(self):
         if self.root is None:
-            return 'error'
+            return None
         x = self.root
         while x.left is not None:
             x = x.left
         self.splay(x)
-        return str(x.key) + ' ' + str(x.val)
+        return x.key, x.val
 
     def findMax(self):
         if self.root is None:
-            return 'error'
+            return None
         x = self.root
         while x.right is not None:
             x = x.right
         self.splay(x)
-        return str(x.key) + ' ' + str(x.val)
+        return x.key, x.val
 
     def search(self, key):
         if self.root is None:
-            return '0'
+            return None
         x = self.root
         while 1:
             if x.key < key and x.right is not None:
@@ -94,10 +100,10 @@ class SplayTree:
                 x = x.left
             elif x.key == key:
                 self.splay(x)
-                return '1' + ' ' + str(x.val)
+                return 1, x.val
             else:
                 self.splay(x)
-                return '0'
+                return None
 
     def add(self, key, val):
         if self.root is None:
@@ -251,34 +257,34 @@ class SplayTree:
         out = ''
         i = 0
 
-        while True:
-            node = q.get()
-            if type(node) == dict:
-                count += node[None]
-                nones_counter = node[None] * 2
+        while 1:
+            x = q.get()
+            if type(x) == dict:
+                count += x[None]
+                nones_counter = x[None] * 2
                 q.put({None: nones_counter})
             else:
                 n -= 1
                 count += 1
-                if not node.left:
+                if not x.left:
                     q.put({None: 1})
                 else:
-                    q.put(node.left)
-                if not node.right:
+                    q.put(x.left)
+                if not x.right:
                     q.put({None: 1})
                 else:
-                    q.put(node.right)
+                    q.put(x.right)
 
             r = log2(count + 1)
             if n == 0 and r == int(r):
                 stop = True
 
-            if type(node) == dict:
-                for k in range(node[None]):
+            if type(x) == dict:
+                for k in range(x[None]):
                     out += '_ '
                     i += 1
             else:
-                out += '[{} {} {}] '.format(node.key, node.val, node.parent.key)
+                out += '[{} {} {}] '.format(x.key, x.val, x.parent.key)
                 i += 1
 
             if i == 2 ** step:
